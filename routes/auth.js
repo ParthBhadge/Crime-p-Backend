@@ -48,11 +48,17 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
+    // Check if the user is verified
+    if (user.isVerified === false) {
+      return res.status(403).json({ error: 'Please verify your email before logging in.' });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
+    // Generate JWT token
     const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.status(200).json({ token, message: 'Login successful' });
   } catch (error) {

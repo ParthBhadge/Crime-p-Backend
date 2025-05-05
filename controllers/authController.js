@@ -81,6 +81,11 @@ const loginUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    // Check if the user is verified
+    if (user.isVerified === false) {
+      return res.status(403).json({ error: 'Please verify your email before logging in.' });
+    }
+
     // Compare the entered password with the hashed password
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
