@@ -26,7 +26,7 @@ app.use('/api', adminRoutes); // Adjust the path as needed
 
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000' })); // Replace with your frontend URL
+app.use(cors({ origin: 'https://crime-portal-ws0j.onrender.com/login' })); // Replace with your frontend URL
 app.use(express.json());
 
 // MongoDB Connection
