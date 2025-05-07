@@ -12,11 +12,15 @@ const connectDB = require('./config/db');
 const auth = require('./routes/auth');
 const complaint = require('./routes/complaints');
 const adminRoutes = require('./routes/adminRoutes');
+const app = express();
 
+app.use(cors({
+  origin: 'https://crime-portal-ws0j.onrender.com/',  // Allow both development and production origins
+
+}));
 
 dotenv.config();
 connectDB();
-const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -34,14 +38,9 @@ app.use('/', (req, res) => {
   res.send('API is running...');
 });
 // Middleware
-app.use(cors({
-  origin: ['http://localhost:5173', 'https://crime-portal-ws0j.onrender.com'], // Allow both development and production origins
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed HTTP methods
-  credentials: true, // Allow cookies if needed
-}));
 
 // Handle preflight requests
-app.options('*', cors());
+// app.options('*', cors());
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
