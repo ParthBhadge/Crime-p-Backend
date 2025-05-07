@@ -24,9 +24,16 @@ app.use('/api/complaints', complaint);
 app.use('/api/admin', adminRoutes);
 app.use('/api', adminRoutes); // Adjust the path as needed
 
-
+app.use('/', (req, res) => {
+  res.send('API is running...');
+});
 // Middleware
-app.use(cors({ origin: 'https://crime-portal-ws0j.onrender.com/login' })); // Replace with your frontend URL
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://crime-portal-ws0j.onrender.com'], // Add both development and production frontend URLs
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed HTTP methods
+  credentials: true, // Allow cookies if needed
+}));
+app.options('*', cors()); // Handle preflight requests
 app.use(express.json());
 
 // MongoDB Connection
