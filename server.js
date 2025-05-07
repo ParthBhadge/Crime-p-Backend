@@ -19,6 +19,12 @@ connectDB();
 const app = express();
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.removeHeader('Cross-Origin-Opener-Policy');
+  res.removeHeader('Cross-Origin-Embedder-Policy');
+  next();
+});
+
 app.use('/api/auth', auth);
 app.use('/api/complaints', complaint);
 app.use('/api/admin', adminRoutes);
@@ -29,12 +35,13 @@ app.use('/', (req, res) => {
 });
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://crime-portal-ws0j.onrender.com'], // Add both development and production frontend URLs
+  origin: ['http://localhost:5173', 'https://crime-portal-ws0j.onrender.com'], // Allow both development and production origins
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed HTTP methods
   credentials: true, // Allow cookies if needed
 }));
-app.options('*', cors()); // Handle preflight requests
-app.use(express.json());
+
+// Handle preflight requests
+app.options('*', cors());
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
