@@ -15,7 +15,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',  // Allow both development and production origins
+  origin: 'https://crime-p-backend-2.onrender.com',  // Allow both development and production origins
 
 }));
 
